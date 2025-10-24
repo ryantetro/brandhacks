@@ -1,45 +1,33 @@
 import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
-import fs from "fs/promises"
-import path from "path"
+import { sql } from "@vercel/postgres"
 
 const waitlistSchema = z.object({
   email: z.string().email("Invalid email address"),
   source: z.string().optional().default("landing_page"),
 })
 
-const WAITLIST_FILE = path.join(process.cwd(), "data", "waitlist.json")
-
-async function getWaitlistData() {
-  try {
-    const data = await fs.readFile(WAITLIST_FILE, "utf-8")
-    return JSON.parse(data)
-  } catch (error) {
-    // If file doesn't exist, create it with initial data
-    const initialData = { count: 237, emails: [] }
-    await fs.mkdir(path.dirname(WAITLIST_FILE), { recursive: true })
-    await fs.writeFile(WAITLIST_FILE, JSON.stringify(initialData, null, 2))
-    return initialData
-  }
-}
-
-async function updateWaitlistData(data: any) {
-  await fs.writeFile(WAITLIST_FILE, JSON.stringify(data, null, 2))
-}
-
 export async function GET(request: NextRequest) {
   try {
-    const data = await getWaitlistData()
+    // Get total count from database
+    const result = await sql`
+      SELECT COUNT(*) as count FROM waitlist
+    `
+    
+    // Add base count of 237 to make it look like we already have signups
+    const totalCount = parseInt(result.rows[0].count) + 237
+    
     return NextResponse.json({
       success: true,
-      count: data.count
+      count: totalCount
     })
   } catch (error) {
     console.error("Get waitlist count error:", error)
-    return NextResponse.json(
-      { success: false, error: "Internal server error" },
-      { status: 500 }
-    )
+    // Return default count if database isn't set up yet
+    return NextResponse.json({
+      success: true,
+      count: 237
+    })
   }
 }
 
@@ -48,38 +36,38 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { email, source } = waitlistSchema.parse(body)
 
-    const data = await getWaitlistData()
-
-    // Check if email already exists
-    if (data.emails.includes(email)) {
-      return NextResponse.json({
-        success: true,
-        message: "You're already on the waitlist!",
-        data: {
-          email,
-          source,
-          count: data.count,
-          joinedAt: new Date().toISOString()
-        }
-      })
+    // Try to insert, if duplicate email, it will fail gracefully
+    try {
+      await sql`
+        INSERT INTO waitlist (email, source, created_at)
+        VALUES (${email}, ${source}, NOW())
+      `
+      
+      console.log(`New waitlist signup: ${email} from ${source}`)
+    } catch (dbError: any) {
+      // Check if it's a duplicate key error (email already exists)
+      if (dbError?.code === '23505') {
+        // Get current count
+        const result = await sql`SELECT COUNT(*) as count FROM waitlist`
+        const totalCount = parseInt(result.rows[0].count) + 237
+        
+        return NextResponse.json({
+          success: true,
+          message: "You're already on the waitlist!",
+          count: totalCount
+        })
+      }
+      throw dbError
     }
 
-    // Add email and increment count
-    data.emails.push(email)
-    data.count += 1
-    await updateWaitlistData(data)
-
-    console.log(`New waitlist signup: ${email} from ${source} - Total: ${data.count}`)
+    // Get updated count
+    const result = await sql`SELECT COUNT(*) as count FROM waitlist`
+    const totalCount = parseInt(result.rows[0].count) + 237
 
     return NextResponse.json({
       success: true,
-      message: "Successfully joined waitlist! Check your email for the cheat sheet.",
-      data: {
-        email,
-        source,
-        count: data.count,
-        joinedAt: new Date().toISOString()
-      }
+      message: "Successfully joined waitlist! Check your email for next steps.",
+      count: totalCount
     })
 
   } catch (error) {

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { promises as fs } from 'fs'
-import path from 'path'
 import { z } from 'zod'
+import { sql } from '@vercel/postgres'
 
 const contactSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -9,33 +8,22 @@ const contactSchema = z.object({
   message: z.string().min(10, "Message must be at least 10 characters")
 })
 
-const CONTACTS_FILE = path.join(process.cwd(), 'data', 'contacts.json')
-
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const contactData = contactSchema.parse(body)
 
-    // Read current contacts
-    const fileContents = await fs.readFile(CONTACTS_FILE, 'utf8')
-    const data = JSON.parse(fileContents)
+    // Insert into database
+    await sql`
+      INSERT INTO contacts (name, email, message, created_at)
+      VALUES (${contactData.name}, ${contactData.email}, ${contactData.message}, NOW())
+    `
 
-    // Add new contact with timestamp
-    const newContact = {
-      ...contactData,
-      timestamp: new Date().toISOString(),
-      id: Date.now().toString()
-    }
-
-    data.contacts.push(newContact)
-
-    // Write back to file
-    await fs.writeFile(CONTACTS_FILE, JSON.stringify(data, null, 2))
+    console.log(`New contact message from: ${contactData.email}`)
 
     return NextResponse.json({ 
       success: true, 
-      message: "Message sent successfully!",
-      contact: newContact
+      message: "Message sent successfully!"
     })
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -55,13 +43,16 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   try {
-    const fileContents = await fs.readFile(CONTACTS_FILE, 'utf8')
-    const data = JSON.parse(fileContents)
+    const result = await sql`
+      SELECT id, name, email, message, created_at 
+      FROM contacts 
+      ORDER BY created_at DESC
+    `
     
     return NextResponse.json({ 
       success: true, 
-      contacts: data.contacts,
-      count: data.contacts.length
+      contacts: result.rows,
+      count: result.rows.length
     })
   } catch (error) {
     console.error('Error reading contacts:', error)
@@ -71,4 +62,3 @@ export async function GET() {
     )
   }
 }
-
