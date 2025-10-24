@@ -111,7 +111,7 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white overflow-x-hidden">
       {/* Animated Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 -left-1/4 w-96 h-96 bg-blue-500/20 rounded-full mix-blend-screen filter blur-3xl animate-pulse"></div>
@@ -121,25 +121,25 @@ export default function LandingPage() {
 
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-xl border-b border-slate-800/50 shadow-lg shadow-slate-900/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-20 lg:h-24">
             {/* Logo */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <img 
                 src="/logo.png" 
                 alt="BrandHacks" 
-                className="w-16 h-16 object-contain"
+                className="w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16 object-contain"
               />
               <div className="flex flex-col">
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent tracking-tight">
+                <span className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent tracking-tight">
                   BrandHacks
                 </span>
-                <span className="text-xs text-slate-400 font-medium tracking-wide">Unlock Hidden Benefits</span>
+                <span className="text-xs text-slate-400 font-medium tracking-wide hidden sm:block">Unlock Hidden Benefits</span>
               </div>
             </div>
 
             {/* Navigation Links */}
-            <div className="hidden md:flex items-center gap-10">
+            <div className="hidden md:flex items-center gap-6 lg:gap-10">
               <a 
                 href="#how-it-works" 
                 className="text-sm font-semibold text-slate-300 hover:text-white transition-all duration-200 relative group"
@@ -168,10 +168,10 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-16 pb-24 px-6 lg:px-8">
+      <section className="relative pt-8 sm:pt-12 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           <motion.div 
-            className="text-center space-y-8"
+            className="text-center space-y-6 sm:space-y-8"
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
@@ -180,18 +180,18 @@ export default function LandingPage() {
             <motion.div 
               variants={fadeInUp}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-teal-500/10 border border-blue-500/20 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-teal-500/10 border border-blue-500/20 backdrop-blur-sm"
             >
-              <Zap className="w-4 h-4 text-blue-400" />
-              <span className="text-sm text-blue-300 font-medium">AI-Powered Money Recovery</span>
+              <Zap className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400" />
+              <span className="text-xs sm:text-sm text-blue-300 font-medium">AI-Powered Money Recovery</span>
             </motion.div>
 
             {/* Main Headline */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               <motion.h1 
                 variants={fadeInUp}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] tracking-tight px-2"
               >
                 Never Miss Hidden
                 <br />
@@ -204,7 +204,7 @@ export default function LandingPage() {
               <motion.p 
                 variants={fadeInUp}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-light"
+                className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-light px-4"
               >
                 Automatically discover warranties, return policies, and brand perks from your purchases. 
                 Get alerts before they expire.
@@ -215,37 +215,37 @@ export default function LandingPage() {
             <motion.div 
               variants={fadeInUp}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="max-w-lg mx-auto pt-4"
+              className="max-w-lg mx-auto pt-2 sm:pt-4 px-4"
             >
               {!isSubmitted ? (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="flex flex-col sm:flex-row gap-3">
+                <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                     <Input
                       type="email"
                       placeholder="Enter your email address"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="flex-1 h-14 px-5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all backdrop-blur-sm"
+                      className="flex-1 h-12 sm:h-14 px-4 sm:px-5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all backdrop-blur-sm text-sm sm:text-base"
                     />
                     <Button 
                       type="submit"
                       disabled={isSubmitting}
-                      className="h-14 px-8 bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-500 hover:to-teal-500 text-white border-0 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all whitespace-nowrap font-medium"
+                      className="h-12 sm:h-14 px-6 sm:px-8 bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-500 hover:to-teal-500 text-white border-0 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all whitespace-nowrap font-medium text-sm sm:text-base"
                     >
                       {isSubmitting ? "Joining..." : "Join Waitlist"}
-                      <ArrowRight className="ml-2 w-4 h-4" />
+                      <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
                     </Button>
                   </div>
-                  <p className="text-sm text-slate-400 text-center">
+                  <p className="text-xs sm:text-sm text-slate-400 text-center">
                     Free forever • No credit card required
                   </p>
                 </form>
               ) : (
-                <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-2xl p-8 backdrop-blur-sm">
-                  <CheckCircle2 className="w-12 h-12 text-green-400 mx-auto mb-3" />
-                  <p className="text-lg font-semibold text-white mb-1">You're on the list!</p>
-                  <p className="text-sm text-slate-300">Check your email for next steps</p>
+                <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+                  <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 text-green-400 mx-auto mb-3" />
+                  <p className="text-base sm:text-lg font-semibold text-white mb-1">You're on the list!</p>
+                  <p className="text-xs sm:text-sm text-slate-300">Check your email for next steps</p>
                 </div>
               )}
             </motion.div>
@@ -254,22 +254,22 @@ export default function LandingPage() {
             <motion.div 
               variants={fadeInUp}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-wrap items-center justify-center gap-8 pt-8"
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 lg:gap-8 pt-6 sm:pt-8 px-4"
             >
-              <div className="flex items-center gap-2.5">
-                <div className="flex -space-x-2">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 border-2 border-slate-900 flex items-center justify-center">
+              <div className="flex items-center gap-2 sm:gap-2.5">
+                <div className="flex -space-x-1 sm:-space-x-2">
+                  <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 border-2 border-slate-900 flex items-center justify-center">
                     <span className="text-xs font-semibold text-white">JD</span>
                   </div>
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-cyan-600 border-2 border-slate-900 flex items-center justify-center">
+                  <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-blue-500 to-cyan-600 border-2 border-slate-900 flex items-center justify-center">
                     <span className="text-xs font-semibold text-white">SM</span>
                   </div>
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-teal-500 to-emerald-600 border-2 border-slate-900 flex items-center justify-center">
+                  <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-teal-500 to-emerald-600 border-2 border-slate-900 flex items-center justify-center">
                     <span className="text-xs font-semibold text-white">AK</span>
                   </div>
                 </div>
                 <div className="text-left">
-                  <p className="text-sm font-semibold text-white">{waitlistCount}+ people</p>
+                  <p className="text-sm sm:text-base font-semibold text-white">{waitlistCount}+ people</p>
                   <p className="text-xs text-slate-400">on the waitlist</p>
                 </div>
               </div>
@@ -277,7 +277,7 @@ export default function LandingPage() {
               <div className="flex items-center gap-2">
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
+                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 text-amber-400 fill-amber-400" />
                   ))}
                 </div>
                 <span className="text-sm font-semibold text-white">4.9/5</span>
@@ -289,20 +289,20 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="relative py-24 px-6 lg:px-8">
+      <section id="how-it-works" className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
                 How It Works
               </h2>
-              <p className="text-lg text-slate-300 max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto px-4">
                 Three simple steps to start recovering money from every purchase
               </p>
             </div>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+          <div className="grid md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
             {[
               { 
                 icon: Upload,
@@ -330,18 +330,18 @@ export default function LandingPage() {
                     <div className="hidden md:block absolute top-20 left-full w-full h-px bg-gradient-to-r from-blue-500/30 to-transparent -translate-y-1/2 z-0"></div>
                   )}
                   
-                  <div className="relative bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-slate-700 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300">
+                  <div className="relative bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-slate-700 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300">
                   {/* Number Badge */}
-                  <div className="absolute -top-4 -right-4 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-teal-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">
+                  <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-blue-600 to-teal-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30 text-sm sm:text-base">
                     {item.number}
                   </div>
                   
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/10 to-teal-500/10 flex items-center justify-center mb-6 border border-blue-500/20">
-                    <item.icon className="w-7 h-7 text-blue-400" />
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-blue-500/10 to-teal-500/10 flex items-center justify-center mb-4 sm:mb-6 border border-blue-500/20">
+                    <item.icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400" />
                   </div>
                   
-                  <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
-                  <p className="text-slate-300 leading-relaxed">{item.desc}</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">{item.title}</h3>
+                  <p className="text-sm sm:text-base text-slate-300 leading-relaxed">{item.desc}</p>
                 </div>
                 </div>
               </ScrollReveal>
@@ -351,20 +351,20 @@ export default function LandingPage() {
       </section>
 
       {/* Key Benefits */}
-      <section id="benefits" className="relative py-24 px-6 lg:px-8">
+      <section id="benefits" className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
                 Why Choose BrandHacks?
               </h2>
-              <p className="text-lg text-slate-300 max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto px-4">
                 The smartest way to maximize value from every purchase
               </p>
             </div>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
             {[
               { 
                 icon: Shield, 
@@ -384,13 +384,13 @@ export default function LandingPage() {
             ].map((item, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
                 <div className="group">
-                  <div className="relative bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-slate-700 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 h-full">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-teal-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/20">
-                      <item.icon className="w-7 h-7 text-white" />
+                  <div className="relative bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-slate-700 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 h-full">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-teal-600 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/20">
+                      <item.icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                     </div>
                     
-                    <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
-                    <p className="text-slate-300 leading-relaxed">{item.desc}</p>
+                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">{item.title}</h3>
+                    <p className="text-sm sm:text-base text-slate-300 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               </ScrollReveal>
@@ -400,15 +400,15 @@ export default function LandingPage() {
       </section>
 
       {/* Brand Trust Bar */}
-      <section className="relative py-20 px-6 lg:px-8 overflow-hidden">
+      <section className="relative py-16 sm:py-20 overflow-hidden">
         <ScrollReveal>
-          <div className="text-center mb-12">
-            <p className="text-sm text-slate-400 uppercase tracking-wider font-semibold">Trusted by Shoppers At</p>
+          <div className="text-center mb-8 sm:mb-12 px-4">
+            <p className="text-xs sm:text-sm text-slate-400 uppercase tracking-wider font-semibold">Trusted by Shoppers At</p>
           </div>
         </ScrollReveal>
         
         <div className="relative">
-          <div className="flex animate-scroll gap-12">
+          <div className="flex animate-scroll gap-8 sm:gap-12">
             {[
               { name: 'Costco', domain: 'costco.com' },
               { name: 'Apple', domain: 'apple.com' },
@@ -423,15 +423,15 @@ export default function LandingPage() {
             ].map((brand, i) => (
               <div 
                 key={i}
-                className="flex-shrink-0 w-24 h-24 rounded-full bg-white flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-slate-900/30"
+                className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full bg-white flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-slate-900/30 p-2 sm:p-3"
               >
                 <img 
-                  src={`https://logo.clearbit.com/${brand.domain}`}
+                  src={`https://logo.clearbit.com/${brand.domain}?size=60`}
                   alt={`${brand.name} logo`}
-                  className="w-16 h-16 object-contain"
+                  className="w-full h-full object-contain max-w-[60%] max-h-[60%]"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none'
-                    e.currentTarget.parentElement!.innerHTML = `<span class="text-slate-300 font-bold text-sm text-center">${brand.name}</span>`
+                    e.currentTarget.parentElement!.innerHTML = `<span class="text-slate-300 font-bold text-xs sm:text-sm text-center">${brand.name}</span>`
                   }}
                 />
               </div>
@@ -460,24 +460,24 @@ export default function LandingPage() {
       `}</style>
 
       {/* What You'll Get */}
-      <section className="relative py-24 px-6 lg:px-8">
+      <section className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           <ScrollReveal>
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 mb-6 backdrop-blur-sm">
-                <Sparkles className="w-4 h-4 text-amber-400" />
-                <span className="text-sm text-amber-300 font-semibold">Limited Time Offer</span>
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 mb-4 sm:mb-6 backdrop-blur-sm">
+                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-amber-400" />
+                <span className="text-xs sm:text-sm text-amber-300 font-semibold">Limited Time Offer</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
                 What Early Members Get
               </h2>
-              <p className="text-lg text-slate-300">
+              <p className="text-base sm:text-lg text-slate-300 px-4">
                 Join now and unlock exclusive founding member benefits
               </p>
             </div>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
             {[
               { text: "Lifetime Premium Access", subtext: "Yours free forever as a founding member", highlight: true },
               { text: "Priority Support", subtext: "Skip the line with dedicated assistance" },
@@ -488,24 +488,24 @@ export default function LandingPage() {
             ].map((item, i) => (
               <ScrollReveal key={i} delay={i * 0.05}>
                 <div 
-                  className={`flex items-start gap-4 p-6 rounded-2xl border transition-all duration-300 ${
+                  className={`flex items-start gap-3 sm:gap-4 p-4 sm:p-6 rounded-2xl border transition-all duration-300 ${
                     item.highlight 
                       ? 'bg-gradient-to-r from-blue-500/10 to-teal-500/10 border-blue-500/30 shadow-lg shadow-blue-500/10' 
                       : 'bg-slate-800/50 backdrop-blur-sm border-slate-700 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/10'
                   }`}
                 >
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
                     item.highlight 
                       ? 'bg-gradient-to-br from-blue-600 to-teal-600 shadow-lg shadow-blue-500/20' 
                       : 'bg-slate-700'
                   }`}>
-                    <CheckCircle2 className={`w-6 h-6 ${item.highlight ? 'text-white' : 'text-blue-400'}`} />
+                    <CheckCircle2 className={`w-5 h-5 sm:w-6 sm:h-6 ${item.highlight ? 'text-white' : 'text-blue-400'}`} />
                   </div>
                   <div className="flex-1">
-                    <p className={`font-bold mb-1 ${item.highlight ? 'text-white text-lg' : 'text-white'}`}>
+                    <p className={`font-bold mb-1 text-sm sm:text-base ${item.highlight ? 'text-white' : 'text-white'}`}>
                       {item.text}
                     </p>
-                    <p className="text-sm text-slate-300">{item.subtext}</p>
+                    <p className="text-xs sm:text-sm text-slate-300">{item.subtext}</p>
                   </div>
                 </div>
               </ScrollReveal>
@@ -515,64 +515,64 @@ export default function LandingPage() {
       </section>
 
       {/* Final Waitlist CTA */}
-      <section id="waitlist" className="relative py-24 px-6 lg:px-8">
+      <section id="waitlist" className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
           <ScrollReveal>
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-teal-500/20 rounded-3xl blur-3xl"></div>
               
-              <div className="relative bg-slate-800/50 backdrop-blur-xl rounded-3xl p-10 lg:p-14 border border-slate-700 shadow-2xl shadow-blue-500/10">
-                <div className="text-center space-y-8">
+              <div className="relative bg-slate-800/50 backdrop-blur-xl rounded-3xl p-6 sm:p-8 lg:p-10 xl:p-14 border border-slate-700 shadow-2xl shadow-blue-500/10">
+                <div className="text-center space-y-6 sm:space-y-8">
                 {/* Scarcity Badge */}
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/20 backdrop-blur-sm">
-                  <Sparkles className="w-4 h-4 text-orange-400 animate-pulse" />
-                  <span className="text-sm text-orange-300 font-bold">
+                <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/20 backdrop-blur-sm">
+                  <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-orange-400 animate-pulse" />
+                  <span className="text-xs sm:text-sm text-orange-300 font-bold">
                     Only {Math.max(1000 - waitlistCount, 0)} Lifetime Spots Remaining
                   </span>
                 </div>
 
                 {/* Heading */}
                 <div>
-                  <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4">
                     Ready to Start Saving?
                   </h2>
-                  <p className="text-lg text-slate-300">
+                  <p className="text-base sm:text-lg text-slate-300 px-4">
                     Join the waitlist today and get <span className="font-bold text-blue-400">lifetime premium access</span> to BrandHacks when we launch
                   </p>
                 </div>
 
                 {/* Form */}
                 {!isSubmitted ? (
-                  <form onSubmit={handleSubmit} className="space-y-4 pt-4">
-                    <div className="flex flex-col sm:flex-row gap-4">
+                  <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 pt-2 sm:pt-4">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                       <Input
                         type="email"
                         placeholder="Enter your email address"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        className="flex-1 h-14 px-5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all backdrop-blur-sm"
+                        className="flex-1 h-12 sm:h-14 px-4 sm:px-5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all backdrop-blur-sm text-sm sm:text-base"
                       />
                       <Button 
                         type="submit"
                         disabled={isSubmitting}
-                        className="h-14 px-8 bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-500 hover:to-teal-500 text-white border-0 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all whitespace-nowrap font-medium"
+                        className="h-12 sm:h-14 px-6 sm:px-8 bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-500 hover:to-teal-500 text-white border-0 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all whitespace-nowrap font-medium text-sm sm:text-base"
                       >
                         {isSubmitting ? "Joining..." : "Claim Your Spot"}
-                        <ArrowRight className="ml-2 w-4 h-4" />
+                        <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
                       </Button>
                     </div>
-                    <p className="text-sm text-slate-400">
-                      <Lock className="w-3.5 h-3.5 inline mr-1.5" />
+                    <p className="text-xs sm:text-sm text-slate-400">
+                      <Lock className="w-3 h-3 sm:w-3.5 sm:h-3.5 inline mr-1 sm:mr-1.5" />
                       Free forever • No credit card • Unsubscribe anytime
                     </p>
                   </form>
                 ) : (
-                  <div className="pt-4">
-                    <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-2xl p-8 backdrop-blur-sm">
-                      <CheckCircle2 className="w-16 h-16 text-green-400 mx-auto mb-4" />
-                      <h3 className="text-2xl font-bold text-white mb-2">You're On The List! 🎉</h3>
-                      <p className="text-slate-300">
+                  <div className="pt-2 sm:pt-4">
+                    <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+                      <CheckCircle2 className="w-12 h-12 sm:w-16 sm:h-16 text-green-400 mx-auto mb-3 sm:mb-4" />
+                      <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">You're On The List! 🎉</h3>
+                      <p className="text-sm sm:text-base text-slate-300">
                         Check your email for next steps and exclusive early access details.
                       </p>
                     </div>
@@ -586,20 +586,20 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="relative py-12 px-6 lg:px-8 border-t border-slate-800">
+      <footer className="relative py-8 sm:py-12 px-4 sm:px-6 lg:px-8 border-t border-slate-800">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <img src="/logo.png" alt="BrandHacks" className="w-8 h-8" />
-            <span className="text-xl font-semibold text-white">BrandHacks</span>
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+            <img src="/logo.png" alt="BrandHacks" className="w-6 h-6 sm:w-8 sm:h-8" />
+            <span className="text-lg sm:text-xl font-semibold text-white">BrandHacks</span>
           </div>
-          <p className="text-slate-400 text-sm mb-6">
+          <p className="text-slate-400 text-xs sm:text-sm mb-4 sm:mb-6 px-4">
             The smart way to unlock hidden money from your purchases
           </p>
-          <div className="flex items-center justify-center gap-8 text-sm text-slate-400">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm text-slate-400">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <span>•</span>
+            <span className="hidden sm:inline">•</span>
             <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-            <span>•</span>
+            <span className="hidden sm:inline">•</span>
             <button 
               onClick={() => setIsContactModalOpen(true)}
               className="hover:text-white transition-colors cursor-pointer"
@@ -607,7 +607,7 @@ export default function LandingPage() {
               Contact Us
             </button>
           </div>
-          <p className="text-slate-500 text-xs mt-8">
+          <p className="text-slate-500 text-xs mt-6 sm:mt-8">
             © 2025 BrandHacks. All rights reserved.
           </p>
         </div>
