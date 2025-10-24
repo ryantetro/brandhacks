@@ -39,8 +39,7 @@ export async function POST(request: NextRequest) {
       where: {
         brand: {
           name: {
-            contains: purchaseData.brand,
-            mode: "insensitive"
+            contains: purchaseData.brand
           }
         },
         isActive: true
