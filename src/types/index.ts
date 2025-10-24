@@ -87,6 +87,7 @@ export interface Brand {
   isVerified: boolean
   createdAt: Date
   updatedAt: Date
+  policies?: BrandPolicy[]
 }
 
 export interface BrandPolicy {
