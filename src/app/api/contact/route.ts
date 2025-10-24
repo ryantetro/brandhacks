@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { neon } from '@neondatabase/serverless'
 
-const sql = neon(process.env.DATABASE_URL!)
-
 const contactSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
@@ -12,6 +10,7 @@ const contactSchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
+    const sql = neon(process.env.DATABASE_URL!)
     const body = await req.json()
     const contactData = contactSchema.parse(body)
 
@@ -42,6 +41,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   try {
+    const sql = neon(process.env.DATABASE_URL!)
     const result = await sql`SELECT id, name, email, message, created_at FROM contacts ORDER BY created_at DESC`
     
     return NextResponse.json({ 

@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { neon } from "@neondatabase/serverless"
 
-const sql = neon(process.env.DATABASE_URL!)
-
 const waitlistSchema = z.object({
   email: z.string().email("Invalid email address"),
   source: z.string().optional().default("landing_page"),
@@ -11,6 +9,7 @@ const waitlistSchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
+    const sql = neon(process.env.DATABASE_URL!)
     // Get total count from database
     const result = await sql`SELECT COUNT(*) as count FROM waitlist`
     
@@ -33,6 +32,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const sql = neon(process.env.DATABASE_URL!)
     const body = await request.json()
     const { email, source } = waitlistSchema.parse(body)
 
