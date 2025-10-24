@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
         ...purchaseData,
         tags: JSON.stringify(purchaseData.tags || []),
         purchaseDate: new Date(purchaseData.purchaseDate),
+        userId: userId,
       }
     })
 
