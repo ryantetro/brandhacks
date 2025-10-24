@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     const result = await sql`SELECT COUNT(*) as count FROM waitlist`
     
     // Add base count of 237 to make it look like we already have signups
-    const totalCount = parseInt(result.rows[0].count) + 237
+    const totalCount = parseInt(result[0].count) + 237
     
     return NextResponse.json({
       success: true,
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       if (dbError?.code === '23505') {
         // Get current count
         const result = await sql`SELECT COUNT(*) as count FROM waitlist`
-        const totalCount = parseInt(result.rows[0].count) + 237
+        const totalCount = parseInt(result[0].count) + 237
         
         return NextResponse.json({
           success: true,
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
 
     // Get updated count
     const result = await sql`SELECT COUNT(*) as count FROM waitlist`
-    const totalCount = parseInt(result.rows[0].count) + 237
+    const totalCount = parseInt(result[0].count) + 237
 
     return NextResponse.json({
       success: true,

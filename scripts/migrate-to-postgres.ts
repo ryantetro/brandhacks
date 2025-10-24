@@ -78,8 +78,8 @@ async function migrate() {
     const waitlistCount = await sql`SELECT COUNT(*) as count FROM waitlist`
     const contactsCount = await sql`SELECT COUNT(*) as count FROM contacts`
     
-    console.log(`   Waitlist entries: ${waitlistCount.rows[0].count}`)
-    console.log(`   Contact messages: ${contactsCount.rows[0].count}`)
+    console.log(`   Waitlist entries: ${waitlistCount[0].count}`)
+    console.log(`   Contact messages: ${contactsCount[0].count}`)
     
   } catch (error) {
     console.error('❌ Migration failed:', error)

@@ -46,8 +46,8 @@ export async function GET() {
     
     return NextResponse.json({ 
       success: true, 
-      contacts: result.rows,
-      count: result.rows.length
+      contacts: result,
+      count: result.length
     })
   } catch (error) {
     console.error('Error reading contacts:', error)
