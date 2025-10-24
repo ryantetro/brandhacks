@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Zavvi - Unlock Hidden Brand Benefits",
+  title: "BrandHacks - Unlock Hidden Brand Benefits",
   description: "Discover hidden warranties, return policies, and brand perks you never knew existed. Track your purchases and never miss out on valuable benefits again.",
   icons: {
     icon: [

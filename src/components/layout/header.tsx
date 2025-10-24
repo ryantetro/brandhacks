@@ -14,11 +14,11 @@ export function Header() {
           <Link className="mr-6 flex items-center space-x-2" href="/landing">
             <img 
               src="/logo.png" 
-              alt="Zavvi" 
+              alt="BrandHacks" 
               className="w-6 h-6"
             />
             <span className="hidden font-bold sm:inline-block">
-              Zavvi
+              BrandHacks
             </span>
           </Link>
           <nav className="flex items-center gap-6 text-sm">

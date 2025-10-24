@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
+import { motion, useInView } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { 
@@ -16,6 +17,44 @@ import {
   Zap,
   Lock
 } from "lucide-react"
+
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+}
+
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 }
+}
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+// Reusable component for scroll animations
+function ScrollReveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.6, delay, ease: "easeOut" }}
+    >
+      {children}
+    </motion.div>
+  )
+}
 
 export default function LandingPage() {
   const [email, setEmail] = useState("")
@@ -80,44 +119,47 @@ export default function LandingPage() {
       </div>
 
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-slate-800">
+      <nav className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-xl border-b border-slate-800/50 shadow-lg shadow-slate-900/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-24">
             {/* Logo */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <img 
                 src="/logo.png" 
-                alt="Zavvi" 
-                className="w-10 h-10"
+                alt="BrandHacks" 
+                className="w-16 h-16 object-contain"
               />
               <div className="flex flex-col">
-                <span className="text-xl font-semibold bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
-                  Zavvi
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent tracking-tight">
+                  BrandHacks
                 </span>
+                <span className="text-xs text-slate-400 font-medium tracking-wide">Unlock Hidden Benefits</span>
               </div>
             </div>
 
             {/* Navigation Links */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-10">
               <a 
                 href="#how-it-works" 
-                className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
+                className="text-sm font-semibold text-slate-300 hover:text-white transition-all duration-200 relative group"
               >
                 How it Works
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-teal-400 group-hover:w-full transition-all duration-300"></span>
               </a>
               <a 
                 href="#benefits" 
-                className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
+                className="text-sm font-semibold text-slate-300 hover:text-white transition-all duration-200 relative group"
               >
                 Benefits
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-teal-400 group-hover:w-full transition-all duration-300"></span>
               </a>
               <Button 
-                size="sm"
-                className="bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-500 hover:to-teal-500 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all"
+                size="default"
+                className="bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-500 hover:to-teal-500 text-white border-0 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 font-semibold px-6"
                 onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 Join Waitlist
-                <ArrowRight className="ml-1.5 w-3.5 h-3.5" />
+                <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </div>
           </div>
@@ -127,32 +169,53 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative pt-16 pb-24 px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center space-y-8">
+          <motion.div 
+            className="text-center space-y-8"
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+          >
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-teal-500/10 border border-blue-500/20 backdrop-blur-sm">
+            <motion.div 
+              variants={fadeInUp}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-teal-500/10 border border-blue-500/20 backdrop-blur-sm"
+            >
               <Zap className="w-4 h-4 text-blue-400" />
               <span className="text-sm text-blue-300 font-medium">AI-Powered Money Recovery</span>
-            </div>
+            </motion.div>
 
             {/* Main Headline */}
             <div className="space-y-6">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight">
+              <motion.h1 
+                variants={fadeInUp}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight"
+              >
                 Never Miss Hidden
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
                   Warranties & Refunds
                 </span>
-              </h1>
+              </motion.h1>
 
               {/* Subheadline */}
-              <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-light">
+              <motion.p 
+                variants={fadeInUp}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-light"
+              >
                 Automatically discover warranties, return policies, and brand perks from your purchases. 
                 Get alerts before they expire.
-              </p>
+              </motion.p>
             </div>
 
             {/* Hero CTA Form */}
-            <div className="max-w-lg mx-auto pt-4">
+            <motion.div 
+              variants={fadeInUp}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="max-w-lg mx-auto pt-4"
+            >
               {!isSubmitted ? (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="flex flex-col sm:flex-row gap-3">
@@ -185,10 +248,14 @@ export default function LandingPage() {
                   <p className="text-sm text-slate-300">Check your email for next steps</p>
                 </div>
               )}
-            </div>
+            </motion.div>
 
             {/* Social Proof */}
-            <div className="flex flex-wrap items-center justify-center gap-8 pt-8">
+            <motion.div 
+              variants={fadeInUp}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex flex-wrap items-center justify-center gap-8 pt-8"
+            >
               <div className="flex items-center gap-2.5">
                 <div className="flex -space-x-2">
                   <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 border-2 border-slate-900 flex items-center justify-center">
@@ -216,22 +283,24 @@ export default function LandingPage() {
                 <span className="text-sm font-semibold text-white">4.9/5</span>
                 <span className="text-xs text-slate-400">rating</span>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* How It Works */}
       <section id="how-it-works" className="relative py-24 px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              How It Works
-            </h2>
-            <p className="text-lg text-slate-300 max-w-2xl mx-auto">
-              Three simple steps to start recovering money from every purchase
-            </p>
-          </div>
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                How It Works
+              </h2>
+              <p className="text-lg text-slate-300 max-w-2xl mx-auto">
+                Three simple steps to start recovering money from every purchase
+              </p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
             {[
@@ -254,13 +323,14 @@ export default function LandingPage() {
                 desc: "Receive timely reminders before warranties and return deadlines expire."
               }
             ].map((item, i) => (
-              <div key={i} className="relative group">
-                {/* Connecting Line */}
-                {i < 2 && (
-                  <div className="hidden md:block absolute top-20 left-full w-full h-px bg-gradient-to-r from-blue-500/30 to-transparent -translate-y-1/2 z-0"></div>
-                )}
-                
-                <div className="relative bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-slate-700 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300">
+              <ScrollReveal key={i} delay={i * 0.1}>
+                <div className="relative group">
+                  {/* Connecting Line */}
+                  {i < 2 && (
+                    <div className="hidden md:block absolute top-20 left-full w-full h-px bg-gradient-to-r from-blue-500/30 to-transparent -translate-y-1/2 z-0"></div>
+                  )}
+                  
+                  <div className="relative bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-slate-700 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300">
                   {/* Number Badge */}
                   <div className="absolute -top-4 -right-4 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-teal-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">
                     {item.number}
@@ -273,7 +343,8 @@ export default function LandingPage() {
                   <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
                   <p className="text-slate-300 leading-relaxed">{item.desc}</p>
                 </div>
-              </div>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -282,14 +353,16 @@ export default function LandingPage() {
       {/* Key Benefits */}
       <section id="benefits" className="relative py-24 px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Why Choose Zavvi?
-            </h2>
-            <p className="text-lg text-slate-300 max-w-2xl mx-auto">
-              The smartest way to maximize value from every purchase
-            </p>
-          </div>
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                Why Choose BrandHacks?
+              </h2>
+              <p className="text-lg text-slate-300 max-w-2xl mx-auto">
+                The smartest way to maximize value from every purchase
+              </p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
@@ -309,16 +382,18 @@ export default function LandingPage() {
                 desc: "256-bit encryption. Your data is private, secure, and never shared with anyone."
               }
             ].map((item, i) => (
-              <div key={i} className="group">
-                <div className="relative bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-slate-700 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 h-full">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-teal-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/20">
-                    <item.icon className="w-7 h-7 text-white" />
+              <ScrollReveal key={i} delay={i * 0.1}>
+                <div className="group">
+                  <div className="relative bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-slate-700 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 h-full">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-teal-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/20">
+                      <item.icon className="w-7 h-7 text-white" />
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+                    <p className="text-slate-300 leading-relaxed">{item.desc}</p>
                   </div>
-                  
-                  <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
-                  <p className="text-slate-300 leading-relaxed">{item.desc}</p>
                 </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -326,9 +401,11 @@ export default function LandingPage() {
 
       {/* Brand Trust Bar */}
       <section className="relative py-20 px-6 lg:px-8 overflow-hidden">
-        <div className="text-center mb-12">
-          <p className="text-sm text-slate-400 uppercase tracking-wider font-semibold">Trusted by Shoppers At</p>
-        </div>
+        <ScrollReveal>
+          <div className="text-center mb-12">
+            <p className="text-sm text-slate-400 uppercase tracking-wider font-semibold">Trusted by Shoppers At</p>
+          </div>
+        </ScrollReveal>
         
         <div className="relative">
           <div className="flex animate-scroll gap-12">
@@ -384,50 +461,53 @@ export default function LandingPage() {
       {/* What You'll Get */}
       <section className="relative py-24 px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 mb-6 backdrop-blur-sm">
-              <Sparkles className="w-4 h-4 text-amber-400" />
-              <span className="text-sm text-amber-300 font-semibold">Limited Time Offer</span>
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 mb-6 backdrop-blur-sm">
+                <Sparkles className="w-4 h-4 text-amber-400" />
+                <span className="text-sm text-amber-300 font-semibold">Limited Time Offer</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                What Early Members Get
+              </h2>
+              <p className="text-lg text-slate-300">
+                Join now and unlock exclusive founding member benefits
+              </p>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              What Early Members Get
-            </h2>
-            <p className="text-lg text-slate-300">
-              Join now and unlock exclusive founding member benefits
-            </p>
-          </div>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              { text: "Lifetime Premium Access", subtext: "Worth $95/year — yours free forever", highlight: true },
+              { text: "Lifetime Premium Access", subtext: "Yours free forever as a founding member", highlight: true },
               { text: "Priority Support", subtext: "Skip the line with dedicated assistance" },
               { text: "Early Feature Access", subtext: "Try new features before anyone else" },
               { text: "Exclusive Hack Database", subtext: "Curated brand perks & insider tips" },
               { text: "Founding Member Badge", subtext: "Show your early adopter status" },
               { text: "Product Roadmap Input", subtext: "Help shape future features" }
             ].map((item, i) => (
-              <div 
-                key={i} 
-                className={`flex items-start gap-4 p-6 rounded-2xl border transition-all duration-300 ${
-                  item.highlight 
-                    ? 'bg-gradient-to-r from-blue-500/10 to-teal-500/10 border-blue-500/30 shadow-lg shadow-blue-500/10' 
-                    : 'bg-slate-800/50 backdrop-blur-sm border-slate-700 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/10'
-                }`}
-              >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                  item.highlight 
-                    ? 'bg-gradient-to-br from-blue-600 to-teal-600 shadow-lg shadow-blue-500/20' 
-                    : 'bg-slate-700'
-                }`}>
-                  <CheckCircle2 className={`w-6 h-6 ${item.highlight ? 'text-white' : 'text-blue-400'}`} />
+              <ScrollReveal key={i} delay={i * 0.05}>
+                <div 
+                  className={`flex items-start gap-4 p-6 rounded-2xl border transition-all duration-300 ${
+                    item.highlight 
+                      ? 'bg-gradient-to-r from-blue-500/10 to-teal-500/10 border-blue-500/30 shadow-lg shadow-blue-500/10' 
+                      : 'bg-slate-800/50 backdrop-blur-sm border-slate-700 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/10'
+                  }`}
+                >
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                    item.highlight 
+                      ? 'bg-gradient-to-br from-blue-600 to-teal-600 shadow-lg shadow-blue-500/20' 
+                      : 'bg-slate-700'
+                  }`}>
+                    <CheckCircle2 className={`w-6 h-6 ${item.highlight ? 'text-white' : 'text-blue-400'}`} />
+                  </div>
+                  <div className="flex-1">
+                    <p className={`font-bold mb-1 ${item.highlight ? 'text-white text-lg' : 'text-white'}`}>
+                      {item.text}
+                    </p>
+                    <p className="text-sm text-slate-300">{item.subtext}</p>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <p className={`font-bold mb-1 ${item.highlight ? 'text-white text-lg' : 'text-white'}`}>
-                    {item.text}
-                  </p>
-                  <p className="text-sm text-slate-300">{item.subtext}</p>
-                </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -436,11 +516,12 @@ export default function LandingPage() {
       {/* Final Waitlist CTA */}
       <section id="waitlist" className="relative py-24 px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-teal-500/20 rounded-3xl blur-3xl"></div>
-            
-            <div className="relative bg-slate-800/50 backdrop-blur-xl rounded-3xl p-10 lg:p-14 border border-slate-700 shadow-2xl shadow-blue-500/10">
-              <div className="text-center space-y-8">
+          <ScrollReveal>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-teal-500/20 rounded-3xl blur-3xl"></div>
+              
+              <div className="relative bg-slate-800/50 backdrop-blur-xl rounded-3xl p-10 lg:p-14 border border-slate-700 shadow-2xl shadow-blue-500/10">
+                <div className="text-center space-y-8">
                 {/* Scarcity Badge */}
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/20 backdrop-blur-sm">
                   <Sparkles className="w-4 h-4 text-orange-400 animate-pulse" />
@@ -455,7 +536,7 @@ export default function LandingPage() {
                     Ready to Start Saving?
                   </h2>
                   <p className="text-lg text-slate-300">
-                    Join the waitlist today and get <span className="font-bold text-blue-400">lifetime premium access</span> when we launch
+                    Join the waitlist today and get <span className="font-bold text-blue-400">lifetime premium access</span> to BrandHacks when we launch
                   </p>
                 </div>
 
@@ -498,7 +579,8 @@ export default function LandingPage() {
                 )}
               </div>
             </div>
-          </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -506,8 +588,8 @@ export default function LandingPage() {
       <footer className="relative py-12 px-6 lg:px-8 border-t border-slate-800">
         <div className="max-w-6xl mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <img src="/logo.png" alt="Zavvi" className="w-8 h-8" />
-            <span className="text-xl font-semibold text-white">Zavvi</span>
+            <img src="/logo.png" alt="BrandHacks" className="w-8 h-8" />
+            <span className="text-xl font-semibold text-white">BrandHacks</span>
           </div>
           <p className="text-slate-400 text-sm mb-6">
             The smart way to unlock hidden money from your purchases
@@ -520,7 +602,7 @@ export default function LandingPage() {
             <a href="#" className="hover:text-white transition-colors">Contact Us</a>
           </div>
           <p className="text-slate-500 text-xs mt-8">
-            © 2025 Zavvi. All rights reserved.
+            © 2025 BrandHacks. All rights reserved.
           </p>
         </div>
       </footer>
