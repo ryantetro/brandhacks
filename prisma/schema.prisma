@@ -1,0 +1,167 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  name          String
+  password      String
+  subscription  String   @default("free") // "free", "premium"
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  purchases     Purchase[]
+  warranties    Warranty[]
+  returnPolicies ReturnPolicy[]
+  alerts        Alert[]
+  
+  @@map("users")
+}
+
+model Purchase {
+  id                String   @id @default(cuid())
+  title             String
+  description       String
+  brand             String
+  productName       String
+  purchasePrice     Float
+  purchaseDate      DateTime
+  receiptImageUrl   String?
+  receiptText       String?  // OCR extracted text
+  category          String
+  tags              String   // Store as JSON string for SQLite
+  storeUrl          String?
+  imageUrl          String?
+  userId            String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  warranties        Warranty[]
+  returnPolicies    ReturnPolicy[]
+  
+  @@map("purchases")
+}
+
+model Warranty {
+  id                String   @id @default(cuid())
+  purchaseId        String
+  brand             String
+  duration          Int      // Duration in days
+  type              String   // "manufacturer", "extended", "accidental"
+  description       String
+  coverage          String   // What's covered
+  exclusions        String   // What's not covered
+  claimProcess      String   // How to claim
+  expiresAt         DateTime
+  isActive          Boolean  @default(true)
+  userId            String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  purchase          Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  alerts            Alert[]
+  
+  @@map("warranties")
+}
+
+model ReturnPolicy {
+  id                String   @id @default(cuid())
+  purchaseId        String
+  brand             String
+  duration          Int      // Duration in days
+  conditions        String   // Return conditions
+  process           String   // Return process
+  refundType        String   // "full", "store_credit", "exchange"
+  expiresAt         DateTime
+  isActive          Boolean  @default(true)
+  userId            String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  purchase          Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  alerts            Alert[]
+  
+  @@map("return_policies")
+}
+
+model Alert {
+  id                String   @id @default(cuid())
+  type              String   // "warranty_expiry", "return_deadline", "price_drop"
+  title             String
+  message           String
+  priority          String   // "low", "medium", "high", "urgent"
+  isRead            Boolean  @default(false)
+  isActive           Boolean  @default(true)
+  scheduledFor      DateTime
+  sentAt            DateTime?
+  warrantyId        String?
+  returnPolicyId    String?
+  userId            String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  warranty          Warranty?    @relation(fields: [warrantyId], references: [id], onDelete: Cascade)
+  returnPolicy      ReturnPolicy? @relation(fields: [returnPolicyId], references: [id], onDelete: Cascade)
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("alerts")
+}
+
+model Brand {
+  id                String   @id @default(cuid())
+  name              String   @unique
+  slug              String   @unique
+  logoUrl           String?
+  website           String?
+  description       String?
+  defaultWarranty   Int?     // Default warranty duration in days
+  defaultReturnPolicy Int?  // Default return policy duration in days
+  isVerified        Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  policies          BrandPolicy[]
+  
+  @@map("brands")
+}
+
+model BrandPolicy {
+  id                String   @id @default(cuid())
+  brandId           String
+  type              String   // "warranty", "return", "price_protection", "other"
+  title             String
+  description       String
+  duration          Int?     // Duration in days
+  conditions        String?  // Specific conditions
+  process           String?  // How to claim/use
+  exclusions        String?  // What's excluded
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  brand             Brand    @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  
+  @@map("brand_policies")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  
+  @@map("categories")
+}
